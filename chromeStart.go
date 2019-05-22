@@ -1,20 +1,20 @@
 package chrome
 
 import (
-	"os/exec"
+	"errors"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
-	"errors"
 )
 
 type Chrome struct {
-	cmd *exec.Cmd
-	path string
-	params []string
-	headless bool
+	cmd           *exec.Cmd
+	path          string
+	params        []string
+	headless      bool
 	width, height int
-	port int
+	port          int
 }
 
 func New(path string, port int) (*Chrome, error) {
@@ -22,7 +22,7 @@ func New(path string, port int) (*Chrome, error) {
 		return nil, errors.New(" the chrome does not exist at the specified path: " + path)
 	}
 	chrome := &Chrome{path: path,
-		port: port,
+		port:   port,
 		params: []string{"--remote-debugging-port=" + strconv.Itoa(port)},
 	}
 
@@ -31,7 +31,7 @@ func New(path string, port int) (*Chrome, error) {
 
 func (c *Chrome) Headless(h bool) error {
 	if c.cmd != nil {
-		return errors.New("the Chrome already running" )
+		return errors.New("the Chrome already running")
 	}
 	c.headless = h
 	if h {
@@ -72,7 +72,7 @@ func (c *Chrome) SetSize(width, height int) error {
 		c.width, c.height = 0, 0
 		for i := range c.params {
 			if strings.HasPrefix(c.params[i], "--window-size=") {
-				c.params = append(c.params[:i], c.params[i + 1:]...)
+				c.params = append(c.params[:i], c.params[i+1:]...)
 				return nil
 			}
 		}
@@ -87,7 +87,6 @@ func (c *Chrome) SetSize(width, height int) error {
 	return nil
 }
 
-
 func (c *Chrome) AddParam(p string) error {
 	for _, param := range c.params {
 		if strings.EqualFold(param, p) {
@@ -101,7 +100,7 @@ func (c *Chrome) AddParam(p string) error {
 func (c *Chrome) RemoveParam(p string) error {
 	for i := range c.params {
 		if strings.EqualFold(c.params[i], p) {
-			c.params = append(c.params[:i], c.params[i + 1:]...)
+			c.params = append(c.params[:i], c.params[i+1:]...)
 			return nil
 		}
 	}
@@ -118,6 +117,5 @@ func (c *Chrome) Start() error {
 }
 
 func (c *Chrome) Stop() error {
-	return c.cmd.Process.Kill()
+	return c.cmd.Process.Release()
 }
-
