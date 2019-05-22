@@ -117,5 +117,5 @@ func (c *Chrome) Start() error {
 }
 
 func (c *Chrome) Stop() error {
-	return c.cmd.Process.Release()
+	return c.cmd.Process.Kill()
 }
