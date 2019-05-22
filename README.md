@@ -1,5 +1,10 @@
-# go-chromeStart
+# go-chromeStart v0.0.3
 Running chrome for for remote control
+
+## Installation
+
+    $ go get github.com/iGiant/go-chromeStart
+
 
 Usage example:
 ```Go
@@ -11,9 +16,12 @@ import (
 )
 
 func main() {
-	r, _ := chrome.New("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", 9245)
-	r.Start()
+	c, _ := chrome.New("C:/Program Files (x86)/Google/Chrome/Application/chrome.exe", 9222)
+	c.Headless(true)
+	c.SetSize(1920, 1024)
+	c.Start()
 	defer r.Stop()
 	time.Sleep(10 * time.Second)
 }
 ```
+Chrome will start for 10 seconds in the hidden mode and will be available for remote control through port 9222
