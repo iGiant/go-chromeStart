@@ -1,5 +1,5 @@
 # go-chromeStart v0.0.3
-Running chrome for for remote control
+Running chrome for remote control (for example when using "github.com/mafredri/cdp"
 
 ## Installation
 
