@@ -20,7 +20,7 @@ func main() {
 	c.Headless(true)
 	c.SetSize(1920, 1024)
 	c.Start()
-	defer r.Stop()
+	defer c.Stop()
 	time.Sleep(10 * time.Second)
 }
 ```
